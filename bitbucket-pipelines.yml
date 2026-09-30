@@ -1,0 +1,63 @@
+# Bitbucket sets CI=true, so browsers run headless and failed scenarios keep video + trace.
+# Add the secrets from .env.example as (secured) repository variables.
+image: mcr.microsoft.com/playwright:v1.63.0-noble
+
+definitions:
+  caches:
+    playwright: ~/.cache/ms-playwright
+  steps:
+    - step: &install-and-check
+        name: Install and static checks
+        caches: [node, playwright]
+        script:
+          - npm ci
+          - npx playwright install --with-deps chromium   # matches the version pinned in package-lock.json
+          - npm run typecheck
+          - npm run test:dry                               # fails on undefined or ambiguous steps
+    - step: &smoke
+        name: Smoke tests
+        caches: [node, playwright]
+        script:
+          - npm ci
+          - npx playwright install --with-deps chromium
+          - TAGS="@smoke and not @wip" npm run test:ci
+        artifacts:
+          - allure-results/**
+          - test-results/**
+    - step: &regression
+        name: Regression tests
+        caches: [node, playwright]
+        size: 2x
+        script:
+          - npm ci
+          - npx playwright install --with-deps chromium
+          - PARALLEL=2 npm run test:ci
+        artifacts:
+          - allure-results/**
+          - test-results/**
+
+pipelines:
+  pull-requests:
+    '**':
+      - step: *install-and-check
+      - step: *smoke
+  branches:
+    '{master,main}':
+      - step: *install-and-check
+      - step: *regression
+  custom:
+    run-by-tag:            # Run pipeline > custom > run-by-tag, set TAGS e.g. "@Exceptions"
+      - variables:
+          - name: TAGS
+            default: "@smoke"
+      - step: *install-and-check
+      - step:
+          name: Run tagged scenarios
+          caches: [node, playwright]
+          script:
+            - npm ci
+            - npx playwright install --with-deps chromium
+            - npm run test:ci
+          artifacts:
+            - allure-results/**
+            - test-results/**

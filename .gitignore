@@ -1,0 +1,12 @@
+.env
+.env.*
+!.env.example
+node_modules/
+allure-results/
+allure-report/
+test-results/
+playwright-report/
+.vscode/
+*.png
+state.json
+temp_explore.js

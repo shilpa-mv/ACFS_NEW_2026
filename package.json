@@ -1,0 +1,45 @@
+{
+  "name": "acfs-connect",
+  "version": "1.0.0",
+  "description": "ACFS Connect UI + API test automation (Cucumber.js, Playwright, TypeScript, Allure)",
+  "scripts": {
+  "clean": "node scripts/clean.js",
+  "typecheck": "tsc --noEmit",
+  "test": "cucumber-js --profile default",
+  "test:smoke": "cucumber-js --profile smoke",
+  "test:regression": "cucumber-js --profile regression",
+  "test:ui": "cucumber-js --profile ui",
+  "test:api": "cucumber-js --profile api",
+  "test:ci": "cucumber-js --profile ci",
+  "test:dry": "cucumber-js --profile default --dry-run",
+  "test:clean": "npm run clean && npm run test",
+"report:generate": "allure generate allure-results -o allure-report",
+"report:open": "allure open allure-report",
+"report:serve": "allure generate allure-results -o allure-report --open",
+  "trace": "playwright show-trace"
+},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@cucumber/cucumber": "^13.0.0",
+    "@playwright/test": "^1.61.1",
+    "allure": "^3.14.3",
+    "allure-commandline": "^2.43.0",
+    "allure-cucumberjs": "^3.10.2",
+    "allure-js-commons": "^3.10.2",
+    "allure-playwright": "^3.10.2",
+    "playwright": "^1.61.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.3"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "otpauth": "^9.5.1",
+    "otplib": "^13.4.1"
+  },
+  "private": true,
+  "engines": {
+    "node": ">=20"
+  }
+}
