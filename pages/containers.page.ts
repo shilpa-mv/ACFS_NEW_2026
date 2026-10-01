@@ -33,7 +33,8 @@ export class ContainersPage extends BasePage {
   }
 
   async verifyDetailPageOpened(): Promise<void> {
-    await expect(this.detailTitle).toBeVisible();
-    Logger.info(`Container detail opened: ${(await this.detailTitle.textContent())?.trim()}`);
-  }
+   await expect(this.detailTitle).toHaveText(/\S/, { timeout: 30_000 });
+  await expect(this.detailTitle).toBeVisible();
+  Logger.info(`Container detail opened: ${(await this.detailTitle.textContent())?.trim()}`);
+}
 }

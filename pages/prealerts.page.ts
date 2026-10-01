@@ -17,7 +17,10 @@ export class PreAlertsPage extends BasePage {
 
   constructor(page: Page) {
     super(page);
-    this.menuItem = page.getByRole("menuitem").filter({ hasText: "Pre-Alert List" });
+    this.menuItem = page
+  .getByRole("menuitem").filter({ hasText: /pre[\s-]?alerts?/i })
+  .or(page.getByRole("link", { name: /pre[\s-]?alerts?/i }))
+  .first();
     this.uploadButton = page.getByRole("button", { name: "Upload Pre-Alert" });
     this.chooseFileButton = page.getByRole("button", { name: "Choose File" });
     this.commentsBox = page.getByRole("textbox");
@@ -29,7 +32,9 @@ export class PreAlertsPage extends BasePage {
   }
 
   async openModule(): Promise<void> 
-  { await this.clickAndSettle(this.menuItem); }
+  { await expect(this.menuItem, "Pre-Alert menu not found: wrong user, page or collapsed layout?")
+    .toBeVisible({ timeout: 20_000 });
+  await this.clickAndSettle(this.menuItem); }
 
   async clickUpload(): Promise<void> 
   { await this.clickAndSettle(this.uploadButton); }

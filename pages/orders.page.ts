@@ -85,15 +85,23 @@ export class OrdersPage extends BasePage {
 
   private async selectCustomer(customer: string): Promise<void> {
     const p = this.page;
-    // The customer picker is a custom (virtual-select) control that needs several interactions to open.
-    await p.getByText("Customer", { exact: true }).click();
-    await p.getByRole("combobox", { name: "Select an option" }).locator("div").first().click();
-    await p.getByText("Select Customer").click();
-    await p.locator('xpath=//div[text()="Select Customer"]/parent::div[1]').click({ force: true });
-    const search = p.getByPlaceholder("Search Customer / Customer Code");
-    await search.fill(customer);
-    await p.getByText(customer).first().click();
-    await this.waitForUiIdle();
+  const search = p.getByPlaceholder("Search Customer / Customer Code");
+
+  await p.getByText("Customer", { exact: true }).click();
+  await this.waitForUiIdle(300, 3_000);
+  await p.getByRole("combobox", { name: "Select an option" }).locator("div").first().click();
+  await this.waitForUiIdle(300, 3_000);
+  await p.getByText("Select Customer").click();
+  await this.waitForUiIdle(300, 3_000);
+  await p.locator('xpath=//div[text()="Select Customer"]/parent::div[1]').click({ force: true });
+
+  // Fail with a clear message if the picker did not open
+  await expect(search, "Customer picker did not open").toBeVisible({ timeout: 10_000 });
+  await search.fill(customer);
+
+  // Click only the option that is actually showing
+  await p.locator(".vscomp-option-text:visible").filter({ hasText: customer }).first().click();
+  await this.waitForUiIdle();
   }
 
   private async selectConsignee(consignee: string): Promise<void> {

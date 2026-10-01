@@ -1,4 +1,4 @@
-@UI @login
+@UI @login @regression
 Feature: Verify Customer Portal menu and dashboard
 
   @smoke @smoketest @regression

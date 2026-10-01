@@ -1,4 +1,4 @@
-@UI @Prealert @wip
+@UI @Prealert @wip @regression @Test123
 Feature: Pre-Alert document upload and order creation
   # @wip: the last two steps ('Create an Order with the "<container>" Container') have no step definition yet.
   # Remove @wip once that step is implemented.

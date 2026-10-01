@@ -1,4 +1,4 @@
-@UI @CPPortal @regression
+@UI @CPPortal @regression @Test123
 Feature: Customer Portal navigation and dashboard functionality
 
   Scenario: User can access the Customer Portal and view the dashboard
