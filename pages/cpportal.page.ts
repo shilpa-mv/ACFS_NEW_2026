@@ -11,10 +11,10 @@ export class CPPortal extends BasePage {
 
   constructor(page: Page) {
     super(page);
-    this.containersButton = page.locator('//*[@href="/CSP/Containers"]').getByRole("button");
+    this.containersButton = page.locator('//a[contains(@href, "Containers")]').getByRole("button");
     this.ordersButton = page.getByRole("menuitem").filter({ hasText: "Orders" }).getByRole("button");
-    this.deliveriesButton = page.locator('//*[@href="/CSP/DeliverySchedule"]').getByRole("button");
-    this.collectionsButton = page.locator('//*[@href="/CSP/CollectionSchedule"]').getByRole("button");
+    this.deliveriesButton = page.locator('//a[contains(@href, "DeliverySchedule")]').getByRole("button");
+    this.collectionsButton = page.locator('//a[contains(@href, "CollectionSchedule")]').getByRole("button");
   }
 
   async openContainers(): Promise<void> 

@@ -1,4 +1,4 @@
-@UI @CSPPortal @OrderCreation @regression
+@UI @CSPPortal @OrderCreation @regression @Test123
 Feature: Order Creation
 
   Scenario: User can create an order with valid details
