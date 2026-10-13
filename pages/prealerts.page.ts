@@ -40,10 +40,19 @@ export class PreAlertsPage extends BasePage {
   { await this.clickAndSettle(this.uploadButton); }
 
   async uploadDocument(comments: string, fileName = "ZIM_EDO_VERSION_1-2.PDF"): Promise<void> {
-    await this.chooseFileButton.setInputFiles(path.join(PATHS.testFiles, fileName));
-    await this.commentsBox.fill(comments);
-    await this.uploadFileButton.click();
-  }
+  const filePath = path.join(PATHS.testFiles, fileName);
+
+  const [chooser] = await Promise.all([
+    this.page.waitForEvent("filechooser", { timeout: 60_000 }),
+    this.chooseFileButton.click({ timeout: 60_000 }),
+  ]);
+  await chooser.setFiles(filePath);
+
+  await this.commentsBox.fill(comments, { timeout: 60_000 });
+
+  // click() auto-waits for the button to be enabled, so this also covers slow file processing
+  await this.uploadFileButton.click({ timeout: 60_000 });
+}
 
   async verifyUploaded(comments: string): Promise<void> {
     await expect(this.successMessage).toBeVisible();
@@ -61,9 +70,9 @@ export class PreAlertsPage extends BasePage {
   }
 
   async verifyPdfShownBesideOrderForm(): Promise<void> {
-    await expect(this.page.locator("#b9-pdf_iframe")).toBeVisible();
-    await expect(this.pdfFrame.locator(".pdfViewer")).toBeVisible();
-    await expect(this.pdfFrame.getByText("Import Delivery Order", { exact: false })).toBeVisible();
-    Logger.info("Pre-alert PDF is displayed next to the order form");
-  }
+  await expect(this.page.locator("#b9-pdf_iframe")).toBeVisible({ timeout: 60_000 });
+  await expect(this.pdfFrame.locator(".pdfViewer")).toBeVisible({ timeout: 60_000 });
+  await expect(this.pdfFrame.getByText("Import Delivery Order", { exact: false })).toBeVisible({ timeout: 45_000 });
+  Logger.info("Pre-alert PDF is displayed next to the order form");
+}
 }

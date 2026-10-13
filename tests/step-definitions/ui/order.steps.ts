@@ -1,4 +1,4 @@
-import { DataTable, Then } from "@cucumber/cucumber";
+import { DataTable, Then, When } from "@cucumber/cucumber";
 import { ORDER_REQUIRED_FIELDS, OrderDetails } from "../../../pages/orders.page";
 import { CustomWorld } from "../../../playwright-utils/world";
 import { parseTable } from "../../../utils/dataTable";
@@ -18,3 +18,10 @@ Then(
     await this.pages.orders.verifyOrderCreated();
   },
 );
+
+When("Create a Pre-Alert Order with the below details", async function (this: CustomWorld, table: DataTable) {
+  const order = parseTable(table, ORDER_REQUIRED_FIELDS) as unknown as OrderDetails;
+  await this.pages.orders.createPreAlertOrder(order);
+});
+
+

@@ -6,6 +6,7 @@ import { StepOverlay } from "./stepOverlay";
 
 /** State shared by the steps of ONE scenario. A fresh instance is created per scenario. */
 export class CustomWorld extends World {
+  private containerNo?: string;
   context!: BrowserContext;
   page!: Page;
   pages!: PageManager;
@@ -28,6 +29,16 @@ export class CustomWorld extends World {
   constructor(options: IWorldOptions) {
     super(options);
   }
+  /** Save the container number generated/used in this scenario. */
+  setContainerNo(value: string): void {
+    this.containerNo = value;
+  }
+/** Read it back in later steps; fails loudly if it was never saved. */
+  getContainerNo(): string {
+    if (!this.containerNo) {
+      throw new Error("ContainerNo was not saved earlier in this scenario");
+    }
+    return this.containerNo;
+  }
 }
-
 setWorldConstructor(CustomWorld);
