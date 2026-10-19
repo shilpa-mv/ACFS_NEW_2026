@@ -45,8 +45,24 @@ pipelines:
     '{master,main}':
       - step: *install-and-check
       - step: *regression
+  # custom:
+  #   run-by-tag:            # Run pipeline > custom > run-by-tag, set TAGS e.g. "@Exceptions"
+  #     - variables:
+  #         - name: TAGS
+  #           default: "@smoke"
+  #     - step: *install-and-check
+  #     - step:
+  #         name: Run tagged scenarios
+  #         caches: [node, playwright]
+  #         script:
+  #           - npm ci
+  #           - npx playwright install --with-deps chromium
+  #           - npm run test:ci
+  #         artifacts:
+  #           - allure-results/**
+  #           - test-results/**
   custom:
-    run-by-tag:            # Run pipeline > custom > run-by-tag, set TAGS e.g. "@Exceptions"
+    run-by-tag:
       - variables:
           - name: TAGS
             default: "@smoke"
