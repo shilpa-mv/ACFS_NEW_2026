@@ -1,0 +1,19 @@
+#  Template NodeJS build
+
+#  This template allows you to validate your NodeJS code.
+#  The workflow allows running tests and code linting on the default branch.
+
+image: mcr.microsoft.com/playwright:v1.64.0-noble
+
+pipelines:
+  default:
+        - step:
+            name: Build and Test
+            caches:
+              - node
+            script:
+              - npm ci # clean install from the package-lock.json
+              - npx playwright install --with-deps #install test browsers
+              - npx playwright test --trace on # run the test
+     
+             
