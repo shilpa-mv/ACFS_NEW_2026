@@ -1,0 +1,8 @@
+{
+  "cucumberautocomplete.steps": [
+    "tests/step-definitions/**/*.ts"
+  ],
+ "cucumber-test-runner-new.testRunner": "cucumber-js",
+    "cucumber-test-runner-new.enableCodeLens": true,
+    "cucumber-test-runner-new.enableTestExplorer": true
+}
